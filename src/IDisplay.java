@@ -41,8 +41,9 @@ public interface IDisplay {
     //
     // Arguments:
     //    info - information about who won and where
+    //    board - current state of the board
     //
-    void showWon(Board.GameWonInfo won) ;
+    void showWon(Board.GameWonInfo won, Board board) ;
 
     //
     // Show the current total number of games won and tied by printing a message

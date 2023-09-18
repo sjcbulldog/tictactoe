@@ -19,7 +19,7 @@ public class ConsoleDisplay implements IDisplay {
     // Arguments:
     //    info - information about who won and where
     //
-    public void showWon(Board.GameWonInfo info) {
+    public void showWon(Board.GameWonInfo info, Board board) {
         if (info.who == GamePiece.EMPTY) {
             System.out.println("  It was a tie") ;
         }

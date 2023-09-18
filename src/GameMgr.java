@@ -296,7 +296,7 @@ public class GameMgr {
             //
             // Show who won the game
             //
-            display_.showWon(info) ;
+            display_.showWon(info, board_) ;
 
             //
             // Show total games won and tied

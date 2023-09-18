@@ -36,6 +36,8 @@ public class FancyDisplay implements IDisplay {
     private final String white_ = "\033[0;37m" ;                // Display all subsequent text as white
     private final String yellow_ = "\033[1;33m" ;               // Display all subsequent text as yellow
     private final String red_ = "\033[0;31m" ;                  // Display all subsequent text as red
+    private final String hide_ = "\033[?25l" ;
+    private final String show_ = "\033[?25h" ;
 
     //
     // Unicode characters for drawing lines
@@ -64,24 +66,76 @@ public class FancyDisplay implements IDisplay {
         }
     }
 
+    private void animateTieGame(Board board) {
+        for(int i = 0 ; i < 10 ; i++) {
+            String color ;
+
+            for(int row = 0 ; row < 3 ; row++) {
+                for(int col = 0 ; col < 3 ; col++) {
+                    GamePiece p = board.getPiece(new BoardPosition(row, col));
+                    if ((i % 2) == 0) {
+                        color = yellow_ ;
+                    }
+                    else {
+                        color = blue_ ;
+                        if (p == GamePiece.O)
+                            color = green_ ;                            
+                    }
+
+                    putsquare(row, col, p.toString(), color);
+                }
+            }
+            try {
+                Thread.sleep(150);
+            }
+            catch(Exception ex) {
+            }
+        }
+
+    }
+
+    private void animateWonGame(Board.GameWonInfo info, Board board) {
+        String color ;
+
+        for(int loop = 0 ; loop < 10 ; loop++) {
+            if ((loop % 2) == 0) {
+                color = yellow_ ;
+            }
+            else {
+                color = blue_ ;
+                if (info.who == GamePiece.O)
+                    color = green_ ;                    
+            }
+            for(int i = 0 ; i < info.where.length ; i++) {
+                putsquare(info.where[i].Row, info.where[i].Col, info.who.toString(), color);
+            }
+
+            try {
+                Thread.sleep(150);
+            }
+            catch(Exception ex) {
+            }            
+        }
+    }
+
     //
     // Show who won the game (or a tie if that happened)
     //
     // Arguments:
     //    info - the information about who won the game
     //
-    public void showWon(Board.GameWonInfo info) {
+    public void showWon(Board.GameWonInfo info, Board board) {
         //
         // If X or O won the game, highlight where they won on the board in yellow
         //
+        System.out.print(hide_) ; 
         if (info.who != GamePiece.EMPTY) {
-            for(int i = 0 ; i < info.where.length ; i++) {
-                putsquare(info.where[i].Row, info.where[i].Col, info.who.toString(), yellow_);
-            }
+            animateWonGame(info, board);
         }
         else {
-
+            animateTieGame(board);
         }
+        System.out.print(show_) ;         
 
         //
         // Move down below the board and print what happened (who won)

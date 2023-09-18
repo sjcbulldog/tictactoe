@@ -9,7 +9,7 @@
             "name": "TicTacToe",
             "request": "launch",
             "mainClass": "GameMgr",
-            "args" : ["--display", "fancy", "--1", "expert", "--2", "human"]
+            "args" : ["--display", "fancy", "--1", "human", "--2", "novice"]
         }
     ]
 }
